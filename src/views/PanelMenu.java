@@ -8,7 +8,7 @@ public class PanelMenu extends JPanel {
 
 
     private JLabel titleMenu;
-    private ButtonMenu addProcess, modifyProcess, deleteProcess, reports, sendProcess, viewManual, exit;
+    private Button addProcess, modifyProcess, deleteProcess, reports, sendProcess, viewManual, exit;
 
 
     public PanelMenu(ActionListener actionListener){
@@ -27,37 +27,37 @@ public class PanelMenu extends JPanel {
         this.titleMenu.setFont(ConstantsGUI.FONT_MENU_TITLE);
         this.addComponent(titleMenu, 0, 1);
 
-        this.addProcess = new ButtonMenu("Crear");
+        this.addProcess = new Button("Crear");
         this.addProcess.addActionListener(actionListener);
         this.addProcess.setActionCommand("CrearProceso");
         this.addComponent(this.addProcess, 0, 2);
 
-        this.modifyProcess = new ButtonMenu("Modificar");
+        this.modifyProcess = new Button("Modificar");
         this.modifyProcess.addActionListener(actionListener);
         this.modifyProcess.setActionCommand("ModificarProceso");
         addComponent(this.modifyProcess, 0, 3);
 
-        this.deleteProcess = new ButtonMenu("Eliminar");
+        this.deleteProcess = new Button("Eliminar");
         this.deleteProcess.addActionListener(actionListener);
         this.deleteProcess.setActionCommand("EliminarProceso");
         addComponent(this.deleteProcess, 0, 4);
 
-        this.reports = new ButtonMenu("Reportes");
+        this.reports = new Button("Reportes");
         this.reports.addActionListener(actionListener);
         this.reports.setActionCommand("Reportes");
         this.addComponent(this.reports, 0, 5);
 
-        this.sendProcess = new ButtonMenu("Iniciar Simulación");
+        this.sendProcess = new Button("Iniciar Simulación");
         this.sendProcess.addActionListener(actionListener);
         this.sendProcess.setActionCommand("Enviar");
         this.addComponent(this.sendProcess, 0, 6);
 
-        this.viewManual = new ButtonMenu("Manual de usuario");
+        this.viewManual = new Button("Manual de usuario");
         this.viewManual.addActionListener(actionListener);
         this.viewManual.setActionCommand("ManualUsuario");
         this.addComponent(this.viewManual, 0, 7);
 
-        this.exit = new ButtonMenu("Salir");
+        this.exit = new Button("Salir");
         this.exit.addActionListener(actionListener);
         this.exit.setActionCommand("Salir");
         this.addComponent(exit, 0, 8);

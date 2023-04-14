@@ -20,7 +20,7 @@ public class DialogCreateProcess extends JDialog {
     private JPanel panelBlockButtons, panelSuspendButtons, panelResumeButtons;
 
 
-    public DialogCreateProcess(ActionListener actionListener, KeyListener keyListener){
+    public DialogCreateProcess(ActionListener actionListener, KeyListener keyListener) {
         this.setModal(true);
         this.setTitle("Crear Proceso");
         this.setLayout(new GridBagLayout());
@@ -40,8 +40,8 @@ public class DialogCreateProcess extends JDialog {
         this.addComponent(this.nameProcess, 0, 0);
 
         this.inputNameProcess = new JTextField(10);
-        this.inputNameProcess.setSize(100,50);
-        this.inputNameProcess.setPreferredSize(new Dimension(100,30));
+        this.inputNameProcess.setSize(100, 50);
+        this.inputNameProcess.setPreferredSize(new Dimension(100, 30));
         this.inputNameProcess.setBackground(Color.WHITE);
         this.inputNameProcess.setFont(ConstantsGUI.FONT_INPUTS);
         this.addComponent(this.inputNameProcess, 1, 0);
@@ -52,8 +52,8 @@ public class DialogCreateProcess extends JDialog {
 
         this.inputTimeProcess = new JTextField(10);
         this.inputTimeProcess.addKeyListener(keyListener);
-        this.inputTimeProcess.setSize(100,50);
-        this.inputTimeProcess.setPreferredSize(new Dimension(100,30));
+        this.inputTimeProcess.setSize(100, 50);
+        this.inputTimeProcess.setPreferredSize(new Dimension(100, 30));
         this.inputTimeProcess.setBackground(Color.WHITE);
         this.inputTimeProcess.setFont(ConstantsGUI.FONT_INPUTS);
         this.addComponent(this.inputTimeProcess, 1, 1);
@@ -149,25 +149,33 @@ public class DialogCreateProcess extends JDialog {
         this.create.addActionListener(actionListener);
         this.create.setActionCommand("AñadirProceso");
         this.create.setPreferredSize(new Dimension(150, 35));
-        this.addComponent(create,0,5);
+        this.addComponent(create, 0, 5);
 
         this.cancel = new Button("Cancelar");
         this.cancel.addActionListener(actionListener);
         this.cancel.setActionCommand("CancelarAñadirProceso");
         this.cancel.setPreferredSize(new Dimension(150, 35));
-        this.addComponent(cancel,1,5);
+        this.addComponent(cancel, 1, 5);
 
     }
 
-    public void addComponent(JComponent component, int x, int y){
+    public void addComponent(JComponent component, int x, int y) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = x;
         gbc.gridy = y;
         this.add(component, gbc);
     }
 
+
+    public void setNameProcess(String nameProcess){
+        this.inputNameProcess.setText(nameProcess);
+    }
     public String getNameProcess(){
         return inputNameProcess.getText();
+    }
+
+    public void setTimeProcess(BigInteger timeProcess){
+        this.inputTimeProcess.setText(timeProcess.toString());
     }
 
     public BigInteger getTimeProcess(){
@@ -181,15 +189,37 @@ public class DialogCreateProcess extends JDialog {
         return timeProcess;
     }
 
-    public void cleanAllFields(){
-        this.inputNameProcess.setText("");
-        this.inputTimeProcess.setText("");
-        this.yesBlockProcess.setSelected(true);
-        this.yesSuspendProcess.setSelected(true);
-        this.yesResumeProcess.setSelected(true);
+
+    public void setIsBlock(boolean isBlock){
+        if(isBlock){
+            this.yesBlockProcess.setSelected(true);
+            this.noBlockProcess.setSelected(false);
+        }
+        else{
+            this.yesBlockProcess.setSelected(false);
+            this.noBlockProcess.setSelected(true);
+        }
     }
-
-
+    public void setIsSuspended(boolean isSuspended){
+        if(isSuspended){
+            this.yesSuspendProcess.setSelected(true);
+            this.noSuspendProcess.setSelected(false);
+        }
+        else{
+            this.yesSuspendProcess.setSelected(false);
+            this.noSuspendProcess.setSelected(true);
+        }
+    }
+    public void setIsResume(boolean isResume){
+        if(isResume){
+            this.yesResumeProcess.setSelected(true);
+            this.noResumeProcess.setSelected(false);
+        }
+        else{
+            this.yesResumeProcess.setSelected(false);
+            this.noResumeProcess.setSelected(true);
+        }
+    }
     public boolean getIsBlocked() {
         return this.yesBlockProcess.isSelected();
     }
@@ -198,5 +228,23 @@ public class DialogCreateProcess extends JDialog {
     }
     public boolean getIsResume() {
         return this.yesResumeProcess.isSelected();
+    }
+
+    public void changeButtonToModify(){
+        this.create.setText("Modificar");
+        this.create.setActionCommand("ConfirmarModificacion");
+    }
+
+    public void changeButtonToCreate(){
+        this.create.setText("Añadir");
+        this.create.setActionCommand("AñadirProceso");
+    }
+
+    public void cleanAllFields(){
+        this.inputNameProcess.setText("");
+        this.inputTimeProcess.setText("");
+        this.yesBlockProcess.setSelected(true);
+        this.yesSuspendProcess.setSelected(true);
+        this.yesResumeProcess.setSelected(true);
     }
 }

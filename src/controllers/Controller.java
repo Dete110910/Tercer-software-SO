@@ -1,6 +1,7 @@
 package controllers;
 
 import views.ViewManager;
+import views.Utilities;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,18 @@ public class Controller implements ActionListener, KeyListener {
             case "CancelarAñadirProceso":
                 this.hideCreateProcessDialog();
                 break;
+            case "ModificarProceso":
+                this.showModifyProcessDialog();
+                break;
+            case "ConfirmarModificacion":
+                this.modifyProcess();
+                break;
+            case "EliminarProceso":
+                this.deleteProcess();
+                break;
+            case "Reportes":
+                this.changeToReportsMenu();
+                break;
             case "Salir":
                 System.exit(0);
                 break;
@@ -35,6 +48,7 @@ public class Controller implements ActionListener, KeyListener {
 
 
     private void showCreateProcessDialog(){
+        System.out.println("Sí, me cambié");
         this.viewManager.showCreateProcessDialog();
     }
 
@@ -45,16 +59,48 @@ public class Controller implements ActionListener, KeyListener {
         boolean isSuspended = this.viewManager.getIsSuspended();
         boolean isResume = this.viewManager.getIsResume();
 
-
-
         this.viewManager.hideCreateProcessDialog();
-
-
-
     }
 
     private void hideCreateProcessDialog() {
         this.viewManager.hideCreateProcessDialog();
+    }
+
+    private void showModifyProcessDialog(){
+        if(this.viewManager.getIndexDataToModify() == -1){
+            Utilities.showErrorDialog("Debe seleccionar un proceso", "Error");
+        }
+        else {
+         this.viewManager.setNameProcess("Name");
+         this.viewManager.setTimeProcess(new BigInteger("124"));
+         this.viewManager.setIsBlock(true);
+         this.viewManager.setIsSuspended(true);
+         this.viewManager.setIsResume(true);
+         this.viewManager.showModifyProcessDialog();
+        }
+
+    }
+
+    private void modifyProcess(){
+        System.out.println("Sí, modifiqué");
+    }
+
+    private void deleteProcess(){
+        if(this.viewManager.getIndexDataToModify() == -1){
+            Utilities.showErrorDialog("Debe seleccionar un proceso", "Error");
+        }
+        else {
+            /* Lógica para eliminar un proceso */
+        }
+    }
+
+    private void changeToReportsMenu(){
+        if(this.viewManager.getReadyProcessListLenght() == 0){
+            Utilities.showErrorDialog("Debe iniciar la simulación primero", "Error");
+        }
+        else {
+            this.viewManager.changeToReportsMenu();
+        }
     }
 
     @Override

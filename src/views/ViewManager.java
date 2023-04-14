@@ -5,13 +5,14 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.math.BigInteger;
-import java.security.Key;
 
 public class ViewManager extends JFrame {
 
     private PanelMenu panelMenu;
     private PanelTable panelTable;
     private DialogCreateProcess dialogCreateProcess;
+
+    private Object[][] readyProcess;
 
     public ViewManager(ActionListener actionListener, KeyListener keyListener){
         this.setLayout(new BorderLayout());
@@ -37,6 +38,8 @@ public class ViewManager extends JFrame {
 
         this.dialogCreateProcess = new DialogCreateProcess(actionListener, keyListener);
 
+        this.readyProcess = new Object[0][0];
+
     }
 
     public void hideAllPanes(){
@@ -44,6 +47,13 @@ public class ViewManager extends JFrame {
     }
 
     public void showCreateProcessDialog() {
+        this.dialogCreateProcess.changeButtonToCreate();
+        this.dialogCreateProcess.setVisible(true);
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+
+    public void showModifyProcessDialog(){
+        this.dialogCreateProcess.changeButtonToModify();
         this.dialogCreateProcess.setVisible(true);
         SwingUtilities.updateComponentTreeUI(this);
     }
@@ -54,24 +64,56 @@ public class ViewManager extends JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
+    public int getIndexDataToModify(){
+        return this.panelTable.getIndexDataProcess();
+    }
+
+    public void setNameProcess(String nameProcess){
+        this.dialogCreateProcess.setNameProcess(nameProcess);
+    }
     public String getNameProcess(){
         return this.dialogCreateProcess.getNameProcess();
     }
 
+
+    public void setTimeProcess(BigInteger timeProcess){
+        this.dialogCreateProcess.setTimeProcess(timeProcess);
+    }
     public BigInteger getTimeProcess(){
         return this.dialogCreateProcess.getTimeProcess();
     }
 
+    public void setIsBlock(boolean isBlock){
+        this.dialogCreateProcess.setIsBlock(isBlock);
+    }
     public boolean getIsBlocked() {
         return this.dialogCreateProcess.getIsBlocked();
+    }
+
+    public void setIsSuspended(boolean isSuspended){
+        this.dialogCreateProcess.setIsSuspended(isSuspended);
     }
 
     public boolean getIsSuspended(){
         return this.dialogCreateProcess.getIsSuspended();
     }
 
+
+    public void setIsResume(boolean isResume){
+        this.dialogCreateProcess.setIsResume(isResume);
+    }
     public boolean getIsResume(){
         return this.dialogCreateProcess.getIsResume();
+    }
+
+    public int getReadyProcessListLenght(){
+        return this.readyProcess.length;
+    }
+
+    public void changeToReportsMenu(){
+        this.remove(panelMenu);
+        this.add(panelMenuReport, BorderLayout.WEST);
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
 }

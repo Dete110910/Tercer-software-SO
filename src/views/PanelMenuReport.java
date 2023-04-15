@@ -1,4 +1,6 @@
 package views;
 
-public class PanelMenuReport {
+import javax.swing.*;
+
+public class PanelMenuReport extends JPanel {
 }

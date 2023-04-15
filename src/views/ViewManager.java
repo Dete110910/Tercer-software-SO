@@ -1,6 +1,7 @@
 package views;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -11,6 +12,8 @@ public class ViewManager extends JFrame {
     private PanelMenu panelMenu;
     private PanelTable panelTable;
     private DialogCreateProcess dialogCreateProcess;
+
+    private PanelMenuReport panelMenuReport;
 
     private Object[][] readyProcess;
 
@@ -37,6 +40,7 @@ public class ViewManager extends JFrame {
         this.add(panelTable, BorderLayout.CENTER);
 
         this.dialogCreateProcess = new DialogCreateProcess(actionListener, keyListener);
+        this.panelMenuReport = new PanelMenuReport();
 
         this.readyProcess = new Object[0][0];
 
@@ -116,4 +120,21 @@ public class ViewManager extends JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
+
+    public void setValuesToTable(Object[][] inQueueList) {
+        Object[][] newQueueList =  this.parseValuesIsBlockAndIsSuspended(inQueueList);
+        DefaultTableModel defaultTableModel = new DefaultTableModel(newQueueList, ConstantsGUI.HEADERS);
+        this.panelTable.setTableProcess(defaultTableModel);
+    }
+
+    private Object[][] parseValuesIsBlockAndIsSuspended(Object[][] queueList){
+        int size = queueList.length;
+        for(int i = 0; i < size; i++){
+            queueList[i][2] = queueList[i][2].equals(true) ? "Sí" : "No";
+            queueList[i][3] = queueList[i][3].equals(true) ? "Sí" : "No";
+            queueList[i][4] = queueList[i][4].equals(true) ? "Sí" : "No";
+
+        }
+        return queueList;
+    }
 }

@@ -1,5 +1,7 @@
 package controllers;
 
+import models.Process;
+import models.ProcessManager;
 import views.ViewManager;
 import views.Utilities;
 
@@ -12,8 +14,10 @@ import java.math.BigInteger;
 public class Controller implements ActionListener, KeyListener {
 
     private ViewManager viewManager;
+    private ProcessManager processManager;
     public Controller(){
         this.viewManager = new ViewManager(this, this);
+        this.processManager = new ProcessManager();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -48,7 +52,6 @@ public class Controller implements ActionListener, KeyListener {
 
 
     private void showCreateProcessDialog(){
-        System.out.println("Sí, me cambié");
         this.viewManager.showCreateProcessDialog();
     }
 
@@ -59,7 +62,17 @@ public class Controller implements ActionListener, KeyListener {
         boolean isSuspended = this.viewManager.getIsSuspended();
         boolean isResume = this.viewManager.getIsResume();
 
-        this.viewManager.hideCreateProcessDialog();
+        if(!processManager.isAlreadyName(nameProcess) && !nameProcess.trim().isEmpty()){
+            Process newProcess = new Process(nameProcess, timeProcess, isBlocked, isSuspended, isResume);
+            processManager.addToInQueue(newProcess);
+            viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
+            viewManager.hideCreateProcessDialog();
+        }
+        else {
+            Utilities.showErrorDialog("Ya existe un proceso con este nombre", "Error");
+        }
+
+
     }
 
     private void hideCreateProcessDialog() {

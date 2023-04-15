@@ -43,6 +43,9 @@ public class Controller implements ActionListener, KeyListener {
             case "Reportes":
                 this.changeToReportsMenu();
                 break;
+            case "Atras":
+                this.changeToMainMenu();
+                break;
             case "Salir":
                 System.exit(0);
                 break;
@@ -62,11 +65,14 @@ public class Controller implements ActionListener, KeyListener {
         boolean isSuspended = this.viewManager.getIsSuspended();
         boolean isResume = this.viewManager.getIsResume();
 
+        /* ¿Deberíamos verificar que el usuario ingrese un tiempo? En el anterior lo dejamos a la deriva eso xd
+        Se pone 0 por defecto pero pues
+        * */
         if(!processManager.isAlreadyName(nameProcess) && !nameProcess.trim().isEmpty()){
             Process newProcess = new Process(nameProcess, timeProcess, isBlocked, isSuspended, isResume);
             processManager.addToInQueue(newProcess);
             viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
-            viewManager.hideCreateProcessDialog();
+            viewManager.hideCreateAndModifyProcessDialog();
         }
         else {
             Utilities.showErrorDialog("Ya existe un proceso con este nombre", "Error");
@@ -76,44 +82,72 @@ public class Controller implements ActionListener, KeyListener {
     }
 
     private void hideCreateProcessDialog() {
-        this.viewManager.hideCreateProcessDialog();
+        this.viewManager.hideCreateAndModifyProcessDialog();
     }
 
     private void showModifyProcessDialog(){
-        if(this.viewManager.getIndexDataToModify() == -1){
+        if(this.viewManager.getIndexDataInTable() == -1){
             Utilities.showErrorDialog("Debe seleccionar un proceso", "Error");
         }
         else {
-         this.viewManager.setNameProcess("Name");
-         this.viewManager.setTimeProcess(new BigInteger("124"));
-         this.viewManager.setIsBlock(true);
-         this.viewManager.setIsSuspended(true);
-         this.viewManager.setIsResume(true);
-         this.viewManager.showModifyProcessDialog();
+            Process processToModify = processManager.getProcessInQueue(viewManager.getIndexDataInTable());
+             this.viewManager.setNameProcess(processToModify.getName());
+             this.viewManager.setTimeProcess(processToModify.getTime());
+             this.viewManager.setIsBlock(processToModify.isBlock());
+             this.viewManager.setIsSuspended(processToModify.isSuspend());
+             this.viewManager.setIsResume(processToModify.isResume());
+             this.viewManager.showModifyProcessDialog();
         }
 
     }
 
     private void modifyProcess(){
         System.out.println("Sí, modifiqué");
+        Process processToModify = processManager.getProcessInQueue(viewManager.getIndexDataInTable());
+        Process newProcess = new Process(viewManager.getNameProcess(), viewManager.getTimeProcess(), viewManager.getIsBlocked(), viewManager.getIsSuspended(), viewManager.getIsResume());
+        String modifyNameProcess = viewManager.getNameProcess();
+
+        if(!processToModify.getName().equals(modifyNameProcess) && processManager.isAlreadyName(modifyNameProcess)){
+            Utilities.showErrorDialog("Ya existe  un proceso con este nombre", "Error");
+        }
+        else {
+            this.processManager.updateProcessInQueue(newProcess, viewManager.getIndexDataInTable());
+            this.viewManager.hideCreateAndModifyProcessDialog();
+            this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
+
+        }
+
     }
 
     private void deleteProcess(){
-        if(this.viewManager.getIndexDataToModify() == -1){
+        if(this.viewManager.getIndexDataInTable() == -1){
             Utilities.showErrorDialog("Debe seleccionar un proceso", "Error");
         }
         else {
             /* Lógica para eliminar un proceso */
+            int confirmation = Utilities.showConfirmationWarning();
+            if(confirmation == 0){
+                this.processManager.deleteProcessFromInQueue(viewManager.getIndexDataInTable());
+                this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
+            }
+
         }
     }
 
     private void changeToReportsMenu(){
+        /*
         if(this.viewManager.getReadyProcessListLenght() == 0){
             Utilities.showErrorDialog("Debe iniciar la simulación primero", "Error");
         }
         else {
             this.viewManager.changeToReportsMenu();
         }
+        */
+        this.viewManager.changeToReportsMenu();
+    }
+
+    private void changeToMainMenu(){
+        this.viewManager.changeToMainMenu();
     }
 
     @Override

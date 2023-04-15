@@ -8,7 +8,7 @@ public class ProcessManager {
 
     private ArrayList<Process> inQueue, ready, dispatch, expiration, execution, wait, block, endIOBlockReady,
                                 suspendBlockToSuspendBlock, resumeSuspendBlockToBlock, suspendBlock, endIOSuspendBlockToSuspendReady,
-                                suspendReady, resumeSuspendReadyToReady, suspendReadyToSuspendReady, suspendExecutionToSuspendReady;
+                                suspendReady, resumeSuspendReadyToReady, suspendReadyToSuspendReady, suspendExecutionToSuspendReady, finished;
     public ProcessManager(){
         this.inQueue = new ArrayList<>();
         this.ready = new ArrayList<>();
@@ -26,6 +26,7 @@ public class ProcessManager {
         this.resumeSuspendReadyToReady = new ArrayList<>();
         this.suspendReadyToSuspendReady = new ArrayList<>();
         this.suspendExecutionToSuspendReady = new ArrayList<>();
+        this.finished = new ArrayList<>();
     }
 
     public void addToInQueue(Process process){
@@ -58,6 +59,21 @@ public class ProcessManager {
 
         return processList;
     }
+
+    public void deleteProcessFromInQueue(int indexProcess) {
+        inQueue.remove(indexProcess);
+    }
+
+    public Process getProcessInQueue(int indexProcess) {
+        return inQueue.get(indexProcess);
+    }
+
+    public void updateProcessInQueue(Process process, int index) {
+        inQueue.set(index, process);
+    }
+
+
+
 
 
     public ArrayList<Process> getInQueue() {
@@ -122,5 +138,9 @@ public class ProcessManager {
 
     public ArrayList<Process> getSuspendExecutionToSuspendReady() {
         return suspendExecutionToSuspendReady;
+    }
+
+    public ArrayList<Process> getFinished() {
+        return finished;
     }
 }

@@ -40,15 +40,12 @@ public class ViewManager extends JFrame {
         this.add(panelTable, BorderLayout.CENTER);
 
         this.dialogCreateProcess = new DialogCreateProcess(actionListener, keyListener);
-        this.panelMenuReport = new PanelMenuReport();
+        this.panelMenuReport = new PanelMenuReport(actionListener);
 
         this.readyProcess = new Object[0][0];
 
     }
 
-    public void hideAllPanes(){
-        this.panelMenu.setVisible(false);
-    }
 
     public void showCreateProcessDialog() {
         this.dialogCreateProcess.changeButtonToCreate();
@@ -62,13 +59,13 @@ public class ViewManager extends JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    public void hideCreateProcessDialog(){
+    public void hideCreateAndModifyProcessDialog(){
         this.dialogCreateProcess.setVisible(false);
         this.dialogCreateProcess.cleanAllFields();
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    public int getIndexDataToModify(){
+    public int getIndexDataInTable(){
         return this.panelTable.getIndexDataProcess();
     }
 
@@ -117,6 +114,12 @@ public class ViewManager extends JFrame {
     public void changeToReportsMenu(){
         this.remove(panelMenu);
         this.add(panelMenuReport, BorderLayout.WEST);
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+
+    public void changeToMainMenu(){
+        this.remove(panelMenuReport);
+        this.add(panelMenu, BorderLayout.WEST);
         SwingUtilities.updateComponentTreeUI(this);
     }
 

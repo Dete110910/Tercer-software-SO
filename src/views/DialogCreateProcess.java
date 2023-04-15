@@ -181,6 +181,7 @@ public class DialogCreateProcess extends JDialog {
     public BigInteger getTimeProcess(){
         BigInteger timeProcess = new BigInteger("0");
         try {
+            System.out.println(inputTimeProcess.getText());
             timeProcess = new BigInteger(this.inputTimeProcess.getText());
         }catch (NumberFormatException numberFormatException){
             System.out.println("Error al convertir un número tan grande");

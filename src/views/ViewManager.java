@@ -12,10 +12,11 @@ public class ViewManager extends JFrame {
     private PanelMenu panelMenu;
     private PanelTable panelTable;
     private DialogCreateProcess dialogCreateProcess;
-
     private PanelMenuReport panelMenuReport;
 
-    private Object[][] readyProcess;
+    private Object[][] inQueue, readyProcess, dispatch, expiration, execution, wait, block, endIOBlockReady,
+    suspendBlockToSuspendBlock, resumeSuspendBlockToBlock, suspendBlock, endIOSuspendBlockToSuspendReady,
+    suspendReady, resumeSuspendReadyToReady, suspendReadyToSuspendReady, suspendExecutionToSuspendReady, finished;
 
     public ViewManager(ActionListener actionListener, KeyListener keyListener){
         this.setLayout(new BorderLayout());
@@ -107,7 +108,7 @@ public class ViewManager extends JFrame {
         return this.dialogCreateProcess.getIsResume();
     }
 
-    public int getReadyProcessListLenght(){
+    public int getReadyProcessListLength(){
         return this.readyProcess.length;
     }
 
@@ -139,5 +140,74 @@ public class ViewManager extends JFrame {
 
         }
         return queueList;
+    }
+
+
+    public void setInQueue(Object[][] inQueue) {
+        this.inQueue = inQueue;
+    }
+
+    public void setReadyProcess(Object[][] readyProcess) {
+        this.readyProcess = readyProcess;
+    }
+
+    public void setDispatch(Object[][] dispatch) {
+        this.dispatch = dispatch;
+    }
+
+    public void setExpiration(Object[][] expiration) {
+        this.expiration = expiration;
+    }
+
+    public void setExecution(Object[][] execution) {
+        this.execution = execution;
+    }
+
+    public void setWait(Object[][] wait) {
+        this.wait = wait;
+    }
+
+    public void setBlock(Object[][] block) {
+        this.block = block;
+    }
+
+    public void setEndIOBlockReady(Object[][] endIOBlockReady) {
+        this.endIOBlockReady = endIOBlockReady;
+    }
+
+    public void setSuspendBlockToSuspendBlock(Object[][] suspendBlockToSuspendBlock) {
+        this.suspendBlockToSuspendBlock = suspendBlockToSuspendBlock;
+    }
+
+    public void setResumeSuspendBlockToBlock(Object[][] resumeSuspendBlockToBlock) {
+        this.resumeSuspendBlockToBlock = resumeSuspendBlockToBlock;
+    }
+
+    public void setSuspendBlock(Object[][] suspendBlock) {
+        this.suspendBlock = suspendBlock;
+    }
+
+    public void setEndIOSuspendBlockToSuspendReady(Object[][] endIOSuspendBlockToSuspendReady) {
+        this.endIOSuspendBlockToSuspendReady = endIOSuspendBlockToSuspendReady;
+    }
+
+    public void setSuspendReady(Object[][] suspendReady) {
+        this.suspendReady = suspendReady;
+    }
+
+    public void setResumeSuspendReadyToReady(Object[][] resumeSuspendReadyToReady) {
+        this.resumeSuspendReadyToReady = resumeSuspendReadyToReady;
+    }
+
+    public void setSuspendReadyToSuspendReady(Object[][] suspendReadyToSuspendReady) {
+        this.suspendReadyToSuspendReady = suspendReadyToSuspendReady;
+    }
+
+    public void setSuspendExecutionToSuspendReady(Object[][] suspendExecutionToSuspendReady) {
+        this.suspendExecutionToSuspendReady = suspendExecutionToSuspendReady;
+    }
+
+    public void setFinished(Object[][] finished) {
+        this.finished = finished;
     }
 }

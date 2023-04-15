@@ -135,15 +135,13 @@ public class Controller implements ActionListener, KeyListener {
     }
 
     private void changeToReportsMenu(){
-        /*
-        if(this.viewManager.getReadyProcessListLenght() == 0){
+
+        if(this.viewManager.getReadyProcessListLength() == 0){
             Utilities.showErrorDialog("Debe iniciar la simulación primero", "Error");
         }
         else {
             this.viewManager.changeToReportsMenu();
         }
-        */
-        this.viewManager.changeToReportsMenu();
     }
 
     private void changeToMainMenu(){

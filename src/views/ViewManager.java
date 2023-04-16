@@ -43,6 +43,7 @@ public class ViewManager extends JFrame {
         this.dialogCreateProcess = new DialogCreateProcess(actionListener, keyListener);
         this.panelMenuReport = new PanelMenuReport(actionListener);
 
+        this.inQueue = new Object[0][0];
         this.readyProcess = new Object[0][0];
 
     }
@@ -126,8 +127,8 @@ public class ViewManager extends JFrame {
     }
 
 
-    public void setValuesToTable(Object[][] inQueueList, String title) {
-        Object[][] newQueueList =  this.parseValuesIsBlockAndIsSuspended(inQueueList);
+    public void setValuesToTable(Object[][] list, String title) {
+        Object[][] newQueueList =  this.parseValuesIsBlockAndIsSuspended(list);
         DefaultTableModel defaultTableModel = new DefaultTableModel(newQueueList, ConstantsGUI.HEADERS);
         this.panelTable.changeTitle(title);
         this.panelTable.setTableProcess(defaultTableModel);
@@ -142,6 +143,13 @@ public class ViewManager extends JFrame {
 
         }
         return queueList;
+    }
+
+    public void setValuesToCurrentProcess(){
+        this.setValuesToTable(this.inQueue, "Procesos actuales");
+    }
+    public void setValuesToReadyReport(){
+        this.setValuesToTable(this.readyProcess, "Procesos Listos");
     }
 
 

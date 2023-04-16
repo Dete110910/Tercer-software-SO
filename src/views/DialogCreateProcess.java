@@ -98,6 +98,8 @@ public class DialogCreateProcess extends JDialog {
 
         this.noSuspendProcess = new JRadioButton("No");
         this.noSuspendProcess.setBackground(Color.decode("#C9ADA7"));
+        this.noSuspendProcess.addActionListener(actionListener);
+        this.noSuspendProcess.setActionCommand("NoSuspende");
         this.noSuspendProcess.setForeground(Color.BLACK);
         this.noSuspendProcess.setFont(ConstantsGUI.FONT_MENU_ACTIONS);
 

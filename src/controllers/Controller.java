@@ -43,6 +43,9 @@ public class Controller implements ActionListener, KeyListener {
             case "Reportes":
                 this.changeToReportsMenu();
                 break;
+            case "ReporteListos":
+                this.changeTableToReadyReports();
+                break;
             case "Atras":
                 this.changeToMainMenu();
                 break;
@@ -138,13 +141,18 @@ public class Controller implements ActionListener, KeyListener {
     }
 
     private void changeToReportsMenu(){
-
         if(this.viewManager.getReadyProcessListLength() == 0){
             Utilities.showErrorDialog("Debe iniciar la simulación primero", "Error");
         }
         else {
+            this.viewManager.setValuesToCurrentProcess();
             this.viewManager.changeToReportsMenu();
         }
+
+    }
+
+    private void changeTableToReadyReports(){
+        this.viewManager.setValuesToReadyReport();
     }
 
     private void changeToMainMenu(){

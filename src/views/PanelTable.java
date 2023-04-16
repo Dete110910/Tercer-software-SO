@@ -53,9 +53,6 @@ public class PanelTable extends JPanel {
         return this.tableProcess.getSelectedRow();
     }
 
-    public void changeTitle(String title){
-        this.scroll.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#204051")),
-                title, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, ConstantsGUI.FONT_TABLE_HEADER, Color.decode("#204051")));
-    }
+
 }
 

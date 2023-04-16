@@ -93,15 +93,11 @@ public class DialogCreateProcess extends JDialog {
 
         this.yesSuspendProcess = new JRadioButton("Sí");
         this.yesSuspendProcess.setBackground(Color.decode("#C9ADA7"));
-        this.yesSuspendProcess.addActionListener(actionListener);
-        this.yesSuspendProcess.setActionCommand("Suspende");
         this.yesSuspendProcess.setForeground(Color.BLACK);
         this.yesSuspendProcess.setFont(ConstantsGUI.FONT_MENU_ACTIONS);
 
         this.noSuspendProcess = new JRadioButton("No");
         this.noSuspendProcess.setBackground(Color.decode("#C9ADA7"));
-        this.noSuspendProcess.addActionListener(actionListener);
-        this.noSuspendProcess.setActionCommand("NoSuspende");
         this.noSuspendProcess.setForeground(Color.BLACK);
         this.noSuspendProcess.setFont(ConstantsGUI.FONT_MENU_ACTIONS);
 
@@ -183,12 +179,12 @@ public class DialogCreateProcess extends JDialog {
     }
 
     public BigInteger getTimeProcess(){
-        BigInteger timeProcess = new BigInteger("-1");
+        BigInteger timeProcess = new BigInteger("0");
         try {
             System.out.println(inputTimeProcess.getText());
             timeProcess = new BigInteger(this.inputTimeProcess.getText());
         }catch (NumberFormatException numberFormatException){
-            System.out.println("Número inválido");
+            System.out.println("Error al convertir un número tan grande");
 
         }
         return timeProcess;
@@ -251,17 +247,5 @@ public class DialogCreateProcess extends JDialog {
         this.yesBlockProcess.setSelected(true);
         this.yesSuspendProcess.setSelected(true);
         this.yesResumeProcess.setSelected(true);
-        this.enableResumeButtons();
-    }
-
-    public void disableResumeButtons() {
-        this.yesResumeProcess.setEnabled(false);
-        this.noResumeProcess.setEnabled(false);
-        this.noResumeProcess.setSelected(true);
-    }
-
-    public void enableResumeButtons(){
-        this.yesResumeProcess.setEnabled(true);
-        this.noResumeProcess.setEnabled(true);
     }
 }

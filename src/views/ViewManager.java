@@ -43,7 +43,6 @@ public class ViewManager extends JFrame {
         this.dialogCreateProcess = new DialogCreateProcess(actionListener, keyListener);
         this.panelMenuReport = new PanelMenuReport(actionListener);
 
-        this.inQueue = new Object[0][0];
         this.readyProcess = new Object[0][0];
 
     }
@@ -65,6 +64,13 @@ public class ViewManager extends JFrame {
         this.dialogCreateProcess.setVisible(false);
         this.dialogCreateProcess.cleanAllFields();
         SwingUtilities.updateComponentTreeUI(this);
+    }
+
+    public void showTableProcessPanel(){
+       /* this.hideAllPanels();
+        panelTableProcess.setVisible(true);
+        this.add(panelTableProcess, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);*/
     }
 
     public int getIndexDataInTable(){
@@ -122,16 +128,26 @@ public class ViewManager extends JFrame {
     public void changeToMainMenu(){
         this.remove(panelMenuReport);
         this.add(panelMenu, BorderLayout.WEST);
-
         SwingUtilities.updateComponentTreeUI(this);
     }
 
 
-    public void setValuesToTable(Object[][] list, String title) {
-        Object[][] newQueueList =  this.parseValuesIsBlockAndIsSuspended(list);
+    public void setValuesToTable(Object[][] inQueueList) {
+        Object[][] newQueueList =  this.parseValuesIsBlockAndIsSuspended(inQueueList);
         DefaultTableModel defaultTableModel = new DefaultTableModel(newQueueList, ConstantsGUI.HEADERS);
-        this.panelTable.changeTitle(title);
         this.panelTable.setTableProcess(defaultTableModel);
+    }
+    public void setValuesToTableProcessInQueue(Object[][] queueListAsStringList){
+       Object[][] newQueueList =  this.parseValuesIsBlock(queueListAsStringList);
+        DefaultTableModel defaultTableModel = new DefaultTableModel(newQueueList, ConstantsGUI.HEADERS);
+        this.panelTable.setTableProcess(defaultTableModel);
+    }
+    private Object[][] parseValuesIsBlock(Object[][] queueList){
+        int size = queueList.length;
+        for(int i = 0; i < size; i++){
+            queueList[i][2] = queueList[i][2].equals(true) ? "Sí" : "No";
+        }
+        return queueList;
     }
 
     private Object[][] parseValuesIsBlockAndIsSuspended(Object[][] queueList){
@@ -143,13 +159,6 @@ public class ViewManager extends JFrame {
 
         }
         return queueList;
-    }
-
-    public void setValuesToCurrentProcess(){
-        this.setValuesToTable(this.inQueue, "Procesos actuales");
-    }
-    public void setValuesToReadyReport(){
-        this.setValuesToTable(this.readyProcess, "Procesos Listos");
     }
 
 
@@ -219,13 +228,5 @@ public class ViewManager extends JFrame {
 
     public void setFinished(Object[][] finished) {
         this.finished = finished;
-    }
-
-    public void disableResumeButton() {
-        this.dialogCreateProcess.disableResumeButtons();
-    }
-
-    public void enableResumeButton(){
-        this.dialogCreateProcess.enableResumeButtons();
     }
 }

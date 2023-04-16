@@ -37,26 +37,17 @@ public class Controller implements ActionListener, KeyListener {
             case "ConfirmarModificacion":
                 this.modifyProcess();
                 break;
-            case "NoSuspende":
-                this.disableResumeButton();
-                break;
-            case "Suspende":
-                this.enableResumeButton();
-                break;
             case "EliminarProceso":
                 this.deleteProcess();
                 break;
             case "Reportes":
                 this.changeToReportsMenu();
                 break;
-            case "ReporteListos":
-                this.changeTableToReadyReports();
+            case "Enviar":
+                this.initSimulation();
                 break;
             case "Atras":
                 this.changeToMainMenu();
-                break;
-            case "ManualUsuario":
-                this.openManual();
                 break;
             case "Salir":
                 System.exit(0);
@@ -65,6 +56,26 @@ public class Controller implements ActionListener, KeyListener {
         }
     }
 
+    private void initSimulation(){
+        int response = Utilities.showConfirmationWarning();
+        if(response == 0){
+            processManager.initSimulation();
+            Utilities.showDoneCPUProcess();
+            System.out.println( viewManager.getReadyProcessListLength());
+            //this.saveReports();
+            processManager.copyToCurrentProcess();
+            processManager.cleanQueueList();
+            this.cleanMainTableProcess();
+            viewManager.showTableProcessPanel();
+        }
+    }
+
+    private void cleanMainTableProcess(){
+        this.viewManager.setValuesToTableProcessInQueue(processManager.getListAsMatrixObject(processManager.getInQueue()));
+    }
+    private void saveReports(){
+
+    }
 
     private void showCreateProcessDialog(){
         this.viewManager.showCreateProcessDialog();
@@ -77,20 +88,17 @@ public class Controller implements ActionListener, KeyListener {
         boolean isSuspended = this.viewManager.getIsSuspended();
         boolean isResume = this.viewManager.getIsResume();
 
-        if(!processManager.isAlreadyName(nameProcess) && !nameProcess.trim().isEmpty() && !timeProcess.toString().equals("-1")){
+        /* ¿Deberíamos verificar que el usuario ingrese un tiempo? En el anterior lo dejamos a la deriva eso xd
+        Se pone 0 por defecto pero pues
+        * */
+        if(!processManager.isAlreadyName(nameProcess) && !nameProcess.trim().isEmpty()){
             Process newProcess = new Process(nameProcess, timeProcess, isBlocked, isSuspended, isResume);
             processManager.addToInQueue(newProcess);
-            viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()), "Procesos Existentes");
+            viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
             viewManager.hideCreateAndModifyProcessDialog();
         }
-        else if(processManager.isAlreadyName(nameProcess)){
+        else {
             Utilities.showErrorDialog("Ya existe un proceso con este nombre", "Error");
-        }
-        else if(nameProcess.trim().isEmpty()){
-            Utilities.showErrorDialog("El nombre del proceso está vacío. Ingrese algún valor", "Error");
-        }
-        else if(timeProcess.toString().equals("-1")){
-            Utilities.showErrorDialog("El tiempo del proceso está vacío. Ingrese un valor numérico entero", "Error");
         }
 
 
@@ -110,9 +118,6 @@ public class Controller implements ActionListener, KeyListener {
              this.viewManager.setTimeProcess(processToModify.getTime());
              this.viewManager.setIsBlock(processToModify.isBlock());
              this.viewManager.setIsSuspended(processToModify.isSuspend());
-             if(!processToModify.isSuspend()){
-                 this.viewManager.disableResumeButton();
-             }
              this.viewManager.setIsResume(processToModify.isResume());
              this.viewManager.showModifyProcessDialog();
         }
@@ -120,34 +125,21 @@ public class Controller implements ActionListener, KeyListener {
     }
 
     private void modifyProcess(){
+        System.out.println("Sí, modifiqué");
         Process processToModify = processManager.getProcessInQueue(viewManager.getIndexDataInTable());
+        Process newProcess = new Process(viewManager.getNameProcess(), viewManager.getTimeProcess(), viewManager.getIsBlocked(), viewManager.getIsSuspended(), viewManager.getIsResume());
         String modifyNameProcess = viewManager.getNameProcess();
 
-        if(viewManager.getNameProcess().trim().equals("")){
-            Utilities.showErrorDialog("El nombre del proceso está vacío. Ingrese algún valor", "Error");
-        }
-        else if(!processToModify.getName().equals(modifyNameProcess) && processManager.isAlreadyName(modifyNameProcess)){
+        if(!processToModify.getName().equals(modifyNameProcess) && processManager.isAlreadyName(modifyNameProcess)){
             Utilities.showErrorDialog("Ya existe  un proceso con este nombre", "Error");
         }
-        else if(processToModify.getTime().toString().equals("-1")){
-            Utilities.showErrorDialog("El tiempo del proceso está vacío. Ingrese un valor numérico entero", "Error");
-        }
         else {
-            Process newProcess = new Process(viewManager.getNameProcess(), viewManager.getTimeProcess(), viewManager.getIsBlocked(), viewManager.getIsSuspended(), viewManager.getIsResume());
             this.processManager.updateProcessInQueue(newProcess, viewManager.getIndexDataInTable());
             this.viewManager.hideCreateAndModifyProcessDialog();
-            this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()), "Procesos Existentes");
+            this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
 
         }
 
-    }
-
-    private void disableResumeButton(){
-        this.viewManager.disableResumeButton();
-    }
-
-    private void enableResumeButton(){
-        this.viewManager.enableResumeButton();
     }
 
     private void deleteProcess(){
@@ -159,39 +151,24 @@ public class Controller implements ActionListener, KeyListener {
             int confirmation = Utilities.showConfirmationWarning();
             if(confirmation == 0){
                 this.processManager.deleteProcessFromInQueue(viewManager.getIndexDataInTable());
-                this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()), "Procesos Existentes");
+                this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
             }
 
         }
     }
 
     private void changeToReportsMenu(){
+
         if(this.viewManager.getReadyProcessListLength() == 0){
             Utilities.showErrorDialog("Debe iniciar la simulación primero", "Error");
         }
         else {
-            this.viewManager.setValuesToCurrentProcess();
             this.viewManager.changeToReportsMenu();
         }
-
-    }
-
-    private void changeTableToReadyReports(){
-        this.viewManager.setValuesToReadyReport();
     }
 
     private void changeToMainMenu(){
         this.viewManager.changeToMainMenu();
-        this.viewManager.setValuesToTable(this.processManager.getListAsMatrixObject(this.processManager.getInQueue()), "Procesos Existentes");
-    }
-
-    private void openManual(){
-        try{
-            java.lang.Process p = Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL "+"C:\\Users\\Usuario\\Desktop\\SO\\Software\\Renovar - ICETEX 2023-1.pdf");
-        } catch (Exception e){
-            System.out.println("El archivo no se puede abrir");
-        }
-
     }
 
     @Override

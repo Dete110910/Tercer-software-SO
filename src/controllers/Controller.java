@@ -77,17 +77,20 @@ public class Controller implements ActionListener, KeyListener {
         boolean isSuspended = this.viewManager.getIsSuspended();
         boolean isResume = this.viewManager.getIsResume();
 
-        /* ¿Deberíamos verificar que el usuario ingrese un tiempo? En el anterior lo dejamos a la deriva eso xd
-        Se pone 0 por defecto pero pues
-        * */
-        if(!processManager.isAlreadyName(nameProcess) && !nameProcess.trim().isEmpty()){
+        if(!processManager.isAlreadyName(nameProcess) && !nameProcess.trim().isEmpty() && !timeProcess.toString().equals("-1")){
             Process newProcess = new Process(nameProcess, timeProcess, isBlocked, isSuspended, isResume);
             processManager.addToInQueue(newProcess);
             viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()), "Procesos Existentes");
             viewManager.hideCreateAndModifyProcessDialog();
         }
-        else {
+        else if(processManager.isAlreadyName(nameProcess)){
             Utilities.showErrorDialog("Ya existe un proceso con este nombre", "Error");
+        }
+        else if(nameProcess.trim().isEmpty()){
+            Utilities.showErrorDialog("El nombre del proceso está vacío. Ingrese algún valor", "Error");
+        }
+        else if(timeProcess.toString().equals("-1")){
+            Utilities.showErrorDialog("El tiempo del proceso está vacío. Ingrese un valor numérico entero", "Error");
         }
 
 
@@ -107,6 +110,9 @@ public class Controller implements ActionListener, KeyListener {
              this.viewManager.setTimeProcess(processToModify.getTime());
              this.viewManager.setIsBlock(processToModify.isBlock());
              this.viewManager.setIsSuspended(processToModify.isSuspend());
+             if(!processToModify.isSuspend()){
+                 this.viewManager.disableResumeButton();
+             }
              this.viewManager.setIsResume(processToModify.isResume());
              this.viewManager.showModifyProcessDialog();
         }
@@ -114,15 +120,20 @@ public class Controller implements ActionListener, KeyListener {
     }
 
     private void modifyProcess(){
-        System.out.println("Sí, modifiqué");
         Process processToModify = processManager.getProcessInQueue(viewManager.getIndexDataInTable());
-        Process newProcess = new Process(viewManager.getNameProcess(), viewManager.getTimeProcess(), viewManager.getIsBlocked(), viewManager.getIsSuspended(), viewManager.getIsResume());
         String modifyNameProcess = viewManager.getNameProcess();
 
-        if(!processToModify.getName().equals(modifyNameProcess) && processManager.isAlreadyName(modifyNameProcess)){
+        if(viewManager.getNameProcess().trim().equals("")){
+            Utilities.showErrorDialog("El nombre del proceso está vacío. Ingrese algún valor", "Error");
+        }
+        else if(!processToModify.getName().equals(modifyNameProcess) && processManager.isAlreadyName(modifyNameProcess)){
             Utilities.showErrorDialog("Ya existe  un proceso con este nombre", "Error");
         }
+        else if(processToModify.getTime().toString().equals("-1")){
+            Utilities.showErrorDialog("El tiempo del proceso está vacío. Ingrese un valor numérico entero", "Error");
+        }
         else {
+            Process newProcess = new Process(viewManager.getNameProcess(), viewManager.getTimeProcess(), viewManager.getIsBlocked(), viewManager.getIsSuspended(), viewManager.getIsResume());
             this.processManager.updateProcessInQueue(newProcess, viewManager.getIndexDataInTable());
             this.viewManager.hideCreateAndModifyProcessDialog();
             this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()), "Procesos Existentes");

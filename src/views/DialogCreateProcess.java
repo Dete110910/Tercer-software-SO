@@ -183,12 +183,12 @@ public class DialogCreateProcess extends JDialog {
     }
 
     public BigInteger getTimeProcess(){
-        BigInteger timeProcess = new BigInteger("0");
+        BigInteger timeProcess = new BigInteger("-1");
         try {
             System.out.println(inputTimeProcess.getText());
             timeProcess = new BigInteger(this.inputTimeProcess.getText());
         }catch (NumberFormatException numberFormatException){
-            System.out.println("Error al convertir un número tan grande");
+            System.out.println("Número inválido");
 
         }
         return timeProcess;
@@ -251,6 +251,7 @@ public class DialogCreateProcess extends JDialog {
         this.yesBlockProcess.setSelected(true);
         this.yesSuspendProcess.setSelected(true);
         this.yesResumeProcess.setSelected(true);
+        this.enableResumeButtons();
     }
 
     public void disableResumeButtons() {

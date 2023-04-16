@@ -37,6 +37,12 @@ public class Controller implements ActionListener, KeyListener {
             case "ConfirmarModificacion":
                 this.modifyProcess();
                 break;
+            case "NoSuspende":
+                this.disableResumeButton();
+                break;
+            case "Suspende":
+                this.enableResumeButton();
+                break;
             case "EliminarProceso":
                 this.deleteProcess();
                 break;
@@ -123,6 +129,14 @@ public class Controller implements ActionListener, KeyListener {
 
         }
 
+    }
+
+    private void disableResumeButton(){
+        this.viewManager.disableResumeButton();
+    }
+
+    private void enableResumeButton(){
+        this.viewManager.enableResumeButton();
     }
 
     private void deleteProcess(){

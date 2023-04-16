@@ -93,6 +93,8 @@ public class DialogCreateProcess extends JDialog {
 
         this.yesSuspendProcess = new JRadioButton("Sí");
         this.yesSuspendProcess.setBackground(Color.decode("#C9ADA7"));
+        this.yesSuspendProcess.addActionListener(actionListener);
+        this.yesSuspendProcess.setActionCommand("Suspende");
         this.yesSuspendProcess.setForeground(Color.BLACK);
         this.yesSuspendProcess.setFont(ConstantsGUI.FONT_MENU_ACTIONS);
 
@@ -249,5 +251,16 @@ public class DialogCreateProcess extends JDialog {
         this.yesBlockProcess.setSelected(true);
         this.yesSuspendProcess.setSelected(true);
         this.yesResumeProcess.setSelected(true);
+    }
+
+    public void disableResumeButtons() {
+        this.yesResumeProcess.setEnabled(false);
+        this.noResumeProcess.setEnabled(false);
+        this.noResumeProcess.setSelected(true);
+    }
+
+    public void enableResumeButtons(){
+        this.yesResumeProcess.setEnabled(true);
+        this.noResumeProcess.setEnabled(true);
     }
 }

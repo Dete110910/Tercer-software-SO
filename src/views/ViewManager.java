@@ -220,4 +220,12 @@ public class ViewManager extends JFrame {
     public void setFinished(Object[][] finished) {
         this.finished = finished;
     }
+
+    public void disableResumeButton() {
+        this.dialogCreateProcess.disableResumeButtons();
+    }
+
+    public void enableResumeButton(){
+        this.dialogCreateProcess.enableResumeButtons();
+    }
 }

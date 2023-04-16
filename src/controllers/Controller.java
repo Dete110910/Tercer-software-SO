@@ -46,6 +46,9 @@ public class Controller implements ActionListener, KeyListener {
             case "Atras":
                 this.changeToMainMenu();
                 break;
+            case "ManualUsuario":
+                this.openManual();
+                break;
             case "Salir":
                 System.exit(0);
                 break;
@@ -71,7 +74,7 @@ public class Controller implements ActionListener, KeyListener {
         if(!processManager.isAlreadyName(nameProcess) && !nameProcess.trim().isEmpty()){
             Process newProcess = new Process(nameProcess, timeProcess, isBlocked, isSuspended, isResume);
             processManager.addToInQueue(newProcess);
-            viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
+            viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()), "Procesos Existentes");
             viewManager.hideCreateAndModifyProcessDialog();
         }
         else {
@@ -113,7 +116,7 @@ public class Controller implements ActionListener, KeyListener {
         else {
             this.processManager.updateProcessInQueue(newProcess, viewManager.getIndexDataInTable());
             this.viewManager.hideCreateAndModifyProcessDialog();
-            this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
+            this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()), "Procesos Existentes");
 
         }
 
@@ -128,7 +131,7 @@ public class Controller implements ActionListener, KeyListener {
             int confirmation = Utilities.showConfirmationWarning();
             if(confirmation == 0){
                 this.processManager.deleteProcessFromInQueue(viewManager.getIndexDataInTable());
-                this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()));
+                this.viewManager.setValuesToTable(processManager.getListAsMatrixObject(processManager.getInQueue()), "Procesos Existentes");
             }
 
         }
@@ -146,6 +149,16 @@ public class Controller implements ActionListener, KeyListener {
 
     private void changeToMainMenu(){
         this.viewManager.changeToMainMenu();
+        this.viewManager.setValuesToTable(this.processManager.getListAsMatrixObject(this.processManager.getInQueue()), "Procesos Existentes");
+    }
+
+    private void openManual(){
+        try{
+            java.lang.Process p = Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL "+"C:\\Users\\Usuario\\Desktop\\SO\\Software\\Renovar - ICETEX 2023-1.pdf");
+        } catch (Exception e){
+            System.out.println("El archivo no se puede abrir");
+        }
+
     }
 
     @Override

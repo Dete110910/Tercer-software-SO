@@ -121,13 +121,15 @@ public class ViewManager extends JFrame {
     public void changeToMainMenu(){
         this.remove(panelMenuReport);
         this.add(panelMenu, BorderLayout.WEST);
+
         SwingUtilities.updateComponentTreeUI(this);
     }
 
 
-    public void setValuesToTable(Object[][] inQueueList) {
+    public void setValuesToTable(Object[][] inQueueList, String title) {
         Object[][] newQueueList =  this.parseValuesIsBlockAndIsSuspended(inQueueList);
         DefaultTableModel defaultTableModel = new DefaultTableModel(newQueueList, ConstantsGUI.HEADERS);
+        this.panelTable.changeTitle(title);
         this.panelTable.setTableProcess(defaultTableModel);
     }
 
